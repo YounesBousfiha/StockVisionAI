@@ -1,3 +1,16 @@
 spring:
   application:
     name: stockvisionai
+  cloud:
+    vault:
+      authentication: TOKEN
+      token: ${VAULT_TOKEN:root}
+      scheme: http
+      host: ${VAULT_HOST:localhost}
+      port: 8200
+      kv:
+        enabled: true
+        backend: secret
+
+  config:
+    import: "vault://"
