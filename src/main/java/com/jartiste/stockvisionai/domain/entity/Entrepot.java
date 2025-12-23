@@ -5,8 +5,6 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.UUID;
-
 @Document
 @Setter
 @Getter
@@ -22,7 +20,7 @@ public class Entrepot {
     private String nom;
 
     @NotBlank
-    private String adresse;
+    private String address;
 
     @NotBlank
     private String ville;
