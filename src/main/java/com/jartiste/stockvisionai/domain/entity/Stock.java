@@ -1,11 +1,10 @@
 package com.jartiste.stockvisionai.domain.entity;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.UUID;
 
 @Document
 @Setter
@@ -18,8 +17,15 @@ public class Stock {
     @Id
     private String id;
 
-    @NotBlank
+    @NotNull
+    @Min(0)
     private Integer quantity;
 
     private Integer seuilAlerte;
+
+    @NotNull
+    private String productId;
+
+    @NotNull
+    private String entrepotId;
 }
