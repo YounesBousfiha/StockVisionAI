@@ -1,11 +1,9 @@
 package com.jartiste.stockvisionai.presentation.controller;
 
-import com.jartiste.stockvisionai.application.service.implementation.AuthService;
+import com.jartiste.stockvisionai.application.service.AuthService;
 import com.jartiste.stockvisionai.presentation.dto.request.LoginRequest;
 import com.jartiste.stockvisionai.presentation.dto.request.RegisterRequest;
 import com.jartiste.stockvisionai.presentation.dto.response.LoginResponse;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
