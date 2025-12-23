@@ -1,8 +1,10 @@
 package com.jartiste.stockvisionai.presentation.controller;
 
 import com.jartiste.stockvisionai.application.service.EntrePotService;
+import com.jartiste.stockvisionai.application.service.StockService;
 import com.jartiste.stockvisionai.presentation.dto.request.EntrePotRequest;
 import com.jartiste.stockvisionai.presentation.dto.response.EntrePotResponse;
+import com.jartiste.stockvisionai.presentation.dto.response.StockResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ public class EntrepotController {
 
 
     private final EntrePotService entrePotService;
+    private final StockService stockService;
 
 
     @PostMapping()
@@ -47,6 +50,13 @@ public class EntrepotController {
     public ResponseEntity<Void> delete(@PathVariable String id) {
         this.entrePotService.deleteEntrepot(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/stocks")
+    public ResponseEntity<List<StockResponse>> getStocks(@PathVariable String id) {
+        this.entrePotService.findOneEntrepot(id);
+        List<StockResponse> stocks = stockService.findByEntrepotId(id);
+        return ResponseEntity.ok(stocks);
     }
 
 }
