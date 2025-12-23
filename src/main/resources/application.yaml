@@ -4,7 +4,7 @@ spring:
   cloud:
     vault:
       authentication: TOKEN
-      token: ${VAULT_TOKEN:root}
+      token: ${VAULT_TOKEN:hvs.nZCiJCqPE37J254yytaHqEaa}
       scheme: http
       host: ${VAULT_HOST:localhost}
       port: 8200
@@ -14,3 +14,9 @@ spring:
 
   config:
     import: "vault://"
+jwt:
+  secret-key: ${JWT_SECRET:HadaSecretKeyDiali9awiJiddan123456}
+  access-token:
+    expiration: 900000
+  refresh-token:
+    expiration: 604800000
