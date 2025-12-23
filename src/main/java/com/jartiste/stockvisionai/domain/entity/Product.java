@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Document
 @Setter
@@ -29,7 +28,7 @@ public class Product {
     private String description;
 
     @NotBlank
-    private String categorie;
+    private String category;
 
     @NotBlank
     private BigDecimal prixVente;
