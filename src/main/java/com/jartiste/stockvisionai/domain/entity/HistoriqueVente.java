@@ -18,7 +18,7 @@ import java.util.UUID;
 public class HistoriqueVente {
 
     @Id
-    private UUID uuid;
+    private String id;
 
     private Integer quantity;
 

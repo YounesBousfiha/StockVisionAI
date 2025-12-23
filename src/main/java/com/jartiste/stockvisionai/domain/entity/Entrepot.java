@@ -16,7 +16,7 @@ import java.util.UUID;
 public class Entrepot {
 
     @Id
-    private UUID uuid;
+    private String id;
 
     @NotBlank
     private String nom;
