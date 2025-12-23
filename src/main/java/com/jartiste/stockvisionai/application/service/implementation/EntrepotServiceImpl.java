@@ -1,43 +1,71 @@
 package com.jartiste.stockvisionai.application.service.implementation;
 
 
+import com.jartiste.stockvisionai.application.mapper.EntrepotMapper;
 import com.jartiste.stockvisionai.application.service.EntrePotService;
 import com.jartiste.stockvisionai.domain.entity.Entrepot;
+import com.jartiste.stockvisionai.domain.exception.ResourceNotFoundException;
 import com.jartiste.stockvisionai.domain.repository.EntrepotRepository;
 import com.jartiste.stockvisionai.presentation.dto.request.EntrePotRequest;
 import com.jartiste.stockvisionai.presentation.dto.response.EntrePotResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class EntrepotServiceImpl implements EntrePotService {
 
     private final EntrepotRepository entrepotRepository;
+    private final EntrepotMapper entrepotMapper;
+    private static final String NOT_FOUND_MSG = "Entrepot not found with id: ";
 
     @Override
     public EntrePotResponse createEntrepot(EntrePotRequest request) {
-        return null;
+        Entrepot entity = entrepotMapper.toEntity(request);
+
+        entity.setCreationAt(LocalDateTime.now());
+        entity.setUpdateAt(LocalDateTime.now());
+
+        Entrepot saved = entrepotRepository.save(entity);
+
+        return entrepotMapper.toResponse(saved);
     }
 
     @Override
-    public List<EntrePotResponse>  getAllEntrepot() {
-        return null;
+    public List<EntrePotResponse> getAllEntrepot() {
+        return entrepotRepository.findAll().stream()
+                .map(entrepotMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
     public EntrePotResponse findOneEntrepot(String id) {
-        return null;
+        Entrepot entity = entrepotRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MSG + id));
+        return entrepotMapper.toResponse(entity);
     }
 
     @Override
-    public EntrePotResponse updateEntrepot(String id) {
-        return null;
+    public EntrePotResponse updateEntrepot(String id, EntrePotRequest request) {
+        Entrepot entity = entrepotRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MSG + id));
+
+        entrepotMapper.updateEntrepotFromDTO(request, entity);
+        entity.setUpdateAt(LocalDateTime.now());
+        Entrepot saved = entrepotRepository.save(entity);
+        return entrepotMapper.toResponse(saved);
     }
 
     @Override
-    public void deleteEntrepot(String id) {}
+    public void deleteEntrepot(String id) {
+        // ensure exists
+        entrepotRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MSG + id));
+        entrepotRepository.deleteById(id);
+    }
 
 }
