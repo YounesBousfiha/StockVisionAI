@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: stockvisionai
+  cloud:
+    vault:
+      authentication: TOKEN
+      token: ${VAULT_TOKEN:hvs.nZCiJCqPE37J254yytaHqEaa}
+      scheme: http
+      host: ${VAULT_HOST:localhost}
+      port: 8200
+      kv:
+        enabled: true
+        backend: secret
+
+  config:
+    import: "vault://"
+jwt:
+  secret-key: ${JWT_SECRET:HadaSecretKeyDiali9awiJiddan123456}
+  access-token:
+    expiration: 900000
+  refresh-token:
+    expiration: 604800000
+
+    ai:
+        deepseek:
+          chat:
+            enabled: false
