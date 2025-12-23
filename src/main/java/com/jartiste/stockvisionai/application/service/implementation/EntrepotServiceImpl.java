@@ -62,7 +62,6 @@ public class EntrepotServiceImpl implements EntrePotService {
 
     @Override
     public void deleteEntrepot(String id) {
-        // ensure exists
         entrepotRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MSG + id));
         entrepotRepository.deleteById(id);
