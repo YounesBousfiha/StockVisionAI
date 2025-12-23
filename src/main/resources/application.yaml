@@ -20,3 +20,8 @@ jwt:
     expiration: 900000
   refresh-token:
     expiration: 604800000
+
+    ai:
+        deepseek:
+          chat:
+            enabled: false
