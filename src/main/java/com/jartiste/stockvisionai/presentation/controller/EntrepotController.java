@@ -3,6 +3,7 @@ package com.jartiste.stockvisionai.presentation.controller;
 import com.jartiste.stockvisionai.application.service.EntrePotService;
 import com.jartiste.stockvisionai.presentation.dto.request.EntrePotRequest;
 import com.jartiste.stockvisionai.presentation.dto.response.EntrePotResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class EntrepotController {
 
 
     @PostMapping()
-    public ResponseEntity<EntrePotResponse> create(EntrePotRequest request) {
+    public ResponseEntity<EntrePotResponse> create(@RequestBody @Valid EntrePotRequest request) {
         EntrePotResponse response = this.entrePotService.createEntrepot(request);
         return ResponseEntity.status(201).body(response);
     }
@@ -37,8 +38,8 @@ public class EntrepotController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EntrePotResponse> update(@PathVariable String id) {
-        EntrePotResponse response = this.entrePotService.updateEntrepot(id);
+    public ResponseEntity<EntrePotResponse> update(@PathVariable String id, @RequestBody @Valid EntrePotRequest request) {
+        EntrePotResponse response = this.entrePotService.updateEntrepot(id, request);
         return ResponseEntity.ok(response);
     }
 
