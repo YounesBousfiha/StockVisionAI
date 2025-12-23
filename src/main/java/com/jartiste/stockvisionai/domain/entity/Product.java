@@ -20,7 +20,7 @@ import java.util.UUID;
 public class Product {
 
     @Id
-    private UUID uuid;
+    private String id;
 
     @NotBlank
     private String nom;

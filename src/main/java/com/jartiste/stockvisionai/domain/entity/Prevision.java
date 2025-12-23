@@ -17,7 +17,7 @@ import java.util.UUID;
 public class Prevision {
 
     @Id
-    private UUID  uuid;
+    private String id;
 
     @NotBlank
     private LocalDate predictionDate;

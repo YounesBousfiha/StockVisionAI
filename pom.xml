@@ -29,7 +29,10 @@
 	<properties>
 		<java.version>21</java.version>
 		<spring-ai.version>1.1.2</spring-ai.version>
-		<spring-cloud.version>2025.0.1</spring-cloud.version>
+        <lombok.version>1.18.36</lombok.version>
+        <spring-cloud.version>2025.0.1</spring-cloud.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -44,19 +47,28 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-web</artifactId>
 	</dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.4.0</version>
+        </dependency>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-validation</artifactId>
 	</dependency>
-	<dependency>
-		<groupId>org.springframework.ai</groupId>
-		<artifactId>spring-ai-starter-model-deepseek</artifactId>
-	</dependency>
+<!--	<dependency>-->
+<!--		<groupId>org.springframework.ai</groupId>-->
+<!--		<artifactId>spring-ai-starter-model-deepseek</artifactId>-->
+<!--	</dependency>-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-vault-config</artifactId>
 		</dependency>
-
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -87,6 +99,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.7.0</version>
+        </dependency>
     </dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -109,18 +126,39 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</path>
-					</annotationProcessorPaths>
-				</configuration>
-			</plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.1</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                        <arg>-Amapstruct.suppressGeneratorTimestamp=true</arg>
+                        <arg>-Amapstruct.defaultComponentModel=spring</arg>
+                    </compilerArgs>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>${lombok-mapstruct-binding.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -130,6 +168,7 @@
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 						</exclude>
+
 					</excludes>
 				</configuration>
 			</plugin>
