@@ -1,5 +1,6 @@
 package com.jartiste.stockvisionai.application.service.implementation;
 
+import com.jartiste.stockvisionai.application.service.AuthService;
 import com.jartiste.stockvisionai.domain.entity.User;
 import com.jartiste.stockvisionai.domain.enums.Role;
 import com.jartiste.stockvisionai.domain.exception.DuplicateResourceException;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class AuthService {
+public class AuthServiceImpl implements AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
