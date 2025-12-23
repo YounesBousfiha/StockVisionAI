@@ -35,7 +35,6 @@ public class StockServiceImpl implements StockService {
                 .entrepotId(request.entrepotId())
                 .build();
         Stock saved = stockRepository.save(s);
-        // fetch product to include in response
         Product product = productRepository.findById(saved.getProductId()).orElse(null);
         ProductResponse productResponse = product != null ? productMapper.toResponse(product) : null;
         return stockMapper.toResponseWithProduct(saved, productResponse);
@@ -46,7 +45,6 @@ public class StockServiceImpl implements StockService {
         List<Stock> stocks = stockRepository.findByEntrepotId(entrepotId);
         if (stocks.isEmpty()) return List.of();
 
-        // Batch load products by collecting productIds to avoid N+1
         List<String> productIds = stocks.stream().map(Stock::getProductId).distinct().collect(Collectors.toList());
         List<Product> products = productRepository.findAllById(productIds);
         Map<String, ProductResponse> productById = products.stream()
