@@ -6,13 +6,13 @@ import com.jartiste.stockvisionai.domain.entity.Product;
 import com.jartiste.stockvisionai.domain.exception.ResourceNotFoundException;
 import com.jartiste.stockvisionai.domain.repository.ProductRepository;
 import com.jartiste.stockvisionai.presentation.dto.request.ProductRequest;
+import com.jartiste.stockvisionai.presentation.dto.request.ProductUpdateRequest;
 import com.jartiste.stockvisionai.presentation.dto.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,10 +39,34 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductResponse> findAllProducts() {
+        return productRepository.findAll().stream()
+                .map(productMapper::toResponse)
+                .toList();
+    }
+
+    @Override
+    public void deleteProduct(String id) {
+        productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND + id));
+        productRepository.deleteById(id);
+    }
+
+    @Override
+    public ProductResponse updateProduct(String id, ProductUpdateRequest request) {
+        Product p = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND + id));
+        productMapper.updateProductFromUpdateDTO(request, p);
+        p.setUpdateAt(LocalDateTime.now());
+        Product updated = productRepository.save(p);
+        return productMapper.toResponse(updated);
+    }
+
+    @Override
     public List<ProductResponse> findAllByIds(List<String> ids) {
         return productRepository.findAllById(ids).stream()
                 .map(productMapper::toResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
 
