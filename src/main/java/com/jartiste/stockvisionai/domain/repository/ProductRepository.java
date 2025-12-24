@@ -9,4 +9,6 @@ public interface ProductRepository {
     Product save(Product p);
     Optional<Product> findById(String id);
     List<Product> findAllById(Iterable<String> ids);
+    List<Product> findAll();
+    void deleteById(String id);
 }
