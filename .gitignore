@@ -36,3 +36,6 @@ Thumbs.db
 
 # Docker volumes
 volumes/
+
+# Configuration files
+init-vault.sh
