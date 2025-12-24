@@ -1,4 +1,8 @@
 package com.jartiste.stockvisionai.presentation.dto.request;
 
-public class EntrepotUpdateRequest {
+public record EntrepotUpdateRequest(
+        String nom,
+        String address,
+        String ville
+) {
 }
