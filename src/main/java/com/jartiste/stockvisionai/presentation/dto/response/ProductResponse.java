@@ -1,9 +1,11 @@
 package com.jartiste.stockvisionai.presentation.dto.response;
 
 import com.jartiste.stockvisionai.domain.enums.Unite;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 
+@Builder
 public record ProductResponse(
         String id,
         String nom,
@@ -13,6 +15,7 @@ public record ProductResponse(
         BigDecimal prixAchat,
         BigDecimal marge,
         Double poids,
-        Unite unite
+        Unite unite,
+        String entrepotId
 ) {}
 
