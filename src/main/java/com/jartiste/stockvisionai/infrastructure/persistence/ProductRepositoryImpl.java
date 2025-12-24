@@ -3,12 +3,12 @@ package com.jartiste.stockvisionai.infrastructure.persistence;
 import com.jartiste.stockvisionai.domain.entity.Product;
 import com.jartiste.stockvisionai.domain.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Component
 @RequiredArgsConstructor
 public class ProductRepositoryImpl implements ProductRepository {
 
