@@ -28,4 +28,14 @@ public class ProductRepositoryImpl implements ProductRepository {
     public List<Product> findAllById(Iterable<String> ids) {
         return repo.findAllById(ids);
     }
+
+    @Override
+    public List<Product> findAll() {
+        return repo.findAll();
+    }
+
+    @Override
+    public void deleteById(String id) {
+        repo.deleteById(id);
+    }
 }
