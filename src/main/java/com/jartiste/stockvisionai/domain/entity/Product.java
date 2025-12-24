@@ -3,6 +3,7 @@ package com.jartiste.stockvisionai.domain.entity;
 
 import com.jartiste.stockvisionai.domain.enums.Unite;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -30,20 +31,23 @@ public class Product {
     @NotBlank
     private String category;
 
-    @NotBlank
+    @NotNull
     private BigDecimal prixVente;
 
-    @NotBlank
+    @NotNull
     private BigDecimal prixAchat;
 
-    @NotBlank
+    @NotNull
     private BigDecimal marge;
 
-    @NotBlank
+    @NotNull
     private Double poids;
 
-    @NotBlank
+    @NotNull
     private Unite unite;
+
+    @NotNull
+    private String entrepotId;
 
     private LocalDateTime creationAt;
     private LocalDateTime updateAt;
