@@ -1,0 +1,17 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://mongodb:27017/stockvisionai}
+
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
+
+  cloud:
+    vault:
+      host: ${VAULT_HOST:vault}
+      port: ${VAULT_PORT:8200}
