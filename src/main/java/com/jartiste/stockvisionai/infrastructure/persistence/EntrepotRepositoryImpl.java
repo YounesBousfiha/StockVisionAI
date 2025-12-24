@@ -2,10 +2,8 @@ package com.jartiste.stockvisionai.infrastructure.persistence;
 
 import com.jartiste.stockvisionai.domain.entity.Entrepot;
 import com.jartiste.stockvisionai.domain.repository.EntrepotRepository;
-import com.jartiste.stockvisionai.domain.repository.ProducRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
