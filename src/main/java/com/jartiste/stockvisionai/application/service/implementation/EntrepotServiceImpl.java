@@ -7,13 +7,14 @@ import com.jartiste.stockvisionai.domain.entity.Entrepot;
 import com.jartiste.stockvisionai.domain.exception.ResourceNotFoundException;
 import com.jartiste.stockvisionai.domain.repository.EntrepotRepository;
 import com.jartiste.stockvisionai.presentation.dto.request.EntrePotRequest;
+import com.jartiste.stockvisionai.presentation.dto.request.EntrepotUpdateRequest;
 import com.jartiste.stockvisionai.presentation.dto.response.EntrePotResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +40,7 @@ public class EntrepotServiceImpl implements EntrePotService {
     public List<EntrePotResponse> getAllEntrepot() {
         return entrepotRepository.findAll().stream()
                 .map(entrepotMapper::toResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -50,7 +51,7 @@ public class EntrepotServiceImpl implements EntrePotService {
     }
 
     @Override
-    public EntrePotResponse updateEntrepot(String id, EntrePotRequest request) {
+    public EntrePotResponse updateEntrepot(String id, @Valid EntrepotUpdateRequest request) {
         Entrepot entity = entrepotRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MSG + id));
 
