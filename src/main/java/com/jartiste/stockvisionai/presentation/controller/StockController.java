@@ -7,18 +7,20 @@ import com.jartiste.stockvisionai.presentation.dto.response.StockResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/stock")
+@RequestMapping("/api/stock")
 @RequiredArgsConstructor
 public class StockController {
 
     private final StockService stockService;
 
     @PostMapping("/entrepot/{entrepot_id}/product/{product_id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
     public ResponseEntity<StockResponse> create(
             @PathVariable("entrepot_id") String entrepotId,
             @PathVariable("product_id") String productId,
@@ -27,27 +29,32 @@ public class StockController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<StockResponse>> getAll(){
         return ResponseEntity.ok(stockService.findAllStocks());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
     public ResponseEntity<StockResponse> getOne(@PathVariable String id){
         return ResponseEntity.ok(stockService.findStockById(id));
     }
 
     @GetMapping("/entrepot/{entrepotId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
     public ResponseEntity<List<StockResponse>> getByEntrepot(@PathVariable String entrepotId){
         return ResponseEntity.ok(stockService.findByEntrepotId(entrepotId));
     }
 
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
     public ResponseEntity<StockResponse> partialUpdate(@PathVariable String id, @RequestBody StockUpdateRequest request){
         return ResponseEntity.ok(stockService.updateStock(id, request));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable String id){
         stockService.deleteStock(id);
         return ResponseEntity.noContent().build();
