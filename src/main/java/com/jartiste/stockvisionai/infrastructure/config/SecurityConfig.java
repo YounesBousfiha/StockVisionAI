@@ -16,10 +16,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Autowired
@@ -31,8 +32,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
-                        authorize.anyRequest().permitAll()
+
+                        authorize
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+
+                                .anyRequest().authenticated()
                 )
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
