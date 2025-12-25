@@ -20,7 +20,7 @@ public class HistoriqueVenteServiceImpl implements HistoriqueVenteService {
     @Override
     public HistoriqueVenteResponse createHistoriqueVente(HistoriqueVenteRequest request) {
         HistoriqueVente entity = historiqueVenteMapper.toEntity(request);
-
+        // TODO: make sure to verify Stock & decrease the stock size
         LocalDate now = LocalDate.now();
         entity.setDayOfWeek(now.getDayOfWeek());
         entity.setMonth(now.getMonth());
