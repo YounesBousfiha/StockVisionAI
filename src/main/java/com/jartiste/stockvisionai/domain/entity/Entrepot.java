@@ -5,7 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Document
 @Setter
@@ -22,8 +22,11 @@ public class Entrepot {
     private String nom;
 
     @NotBlank
-    private String adresse;
+    private String address;
 
     @NotBlank
     private String ville;
+
+    private LocalDateTime creationAt;
+    private LocalDateTime updateAt;
 }

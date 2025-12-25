@@ -11,17 +11,20 @@ spring:
       kv:
         enabled: true
         backend: secret
+        application-name: stockvisionai
 
   config:
     import: "vault://"
+
+# JWT configuration - values loaded from Vault (secret/stockvisionai)
+# Vault provides: jwt.secret-key, spring.data.mongodb.uri, spring.data.redis.host/port
 jwt:
-  secret-key: ${JWT_SECRET:HadaSecretKeyDiali9awiJiddan123456}
   access-token:
     expiration: 900000
   refresh-token:
     expiration: 604800000
 
-    ai:
-        deepseek:
-          chat:
-            enabled: false
+spring.ai:
+  deepseek:
+    chat:
+      enabled: false

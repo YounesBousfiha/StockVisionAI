@@ -1,6 +1,41 @@
 package com.jartiste.stockvisionai.infrastructure.persistence;
 
-import com.jartiste.stockvisionai.domain.repository.ProducRepository;
+import com.jartiste.stockvisionai.domain.entity.Product;
+import com.jartiste.stockvisionai.domain.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-public class ProductRepositoryImpl  implements ProducRepository {
+import java.util.List;
+import java.util.Optional;
+
+@Component
+@RequiredArgsConstructor
+public class ProductRepositoryImpl implements ProductRepository {
+
+    private final SpringDataProductRepository repo;
+
+    @Override
+    public Product save(Product p) {
+        return repo.save(p);
+    }
+
+    @Override
+    public Optional<Product> findById(String id) {
+        return repo.findById(id);
+    }
+
+    @Override
+    public List<Product> findAllById(Iterable<String> ids) {
+        return repo.findAllById(ids);
+    }
+
+    @Override
+    public List<Product> findAll() {
+        return repo.findAll();
+    }
+
+    @Override
+    public void deleteById(String id) {
+        repo.deleteById(id);
+    }
 }

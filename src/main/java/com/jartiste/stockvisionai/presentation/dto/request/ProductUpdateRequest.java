@@ -1,4 +1,4 @@
-package com.jartiste.stockvisionai.presentation.dto.response;
+package com.jartiste.stockvisionai.presentation.dto.request;
 
 import com.jartiste.stockvisionai.domain.enums.Unite;
 import lombok.Builder;
@@ -6,8 +6,7 @@ import lombok.Builder;
 import java.math.BigDecimal;
 
 @Builder
-public record ProductResponse(
-        String id,
+public record ProductUpdateRequest(
         String nom,
         String description,
         String category,
@@ -18,4 +17,3 @@ public record ProductResponse(
         Unite unite,
         String entrepotId
 ) {}
-
