@@ -31,11 +31,15 @@ Thumbs.db
 # Environment and secrets
 .env
 .env.local
+.env.dev
+.env.prod
 *.key
 *.pem
+vault-token.txt
+.vault-token
 
 # Docker volumes
 volumes/
 
-# Configuration files
-init-vault.sh
+# Keep init-vault.sh - it's safe to commit
+# But ignore any generated token files
