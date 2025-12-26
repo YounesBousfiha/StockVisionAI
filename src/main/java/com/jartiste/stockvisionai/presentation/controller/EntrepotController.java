@@ -45,6 +45,13 @@ public class EntrepotController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/gestionnaire/{gestionnaireId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
+    public ResponseEntity<List<EntrePotResponse>> getByGestionnaireId(@PathVariable String gestionnaireId) {
+        List<EntrePotResponse> responses = this.entrePotService.findByGestionnaireId(gestionnaireId);
+        return ResponseEntity.ok(responses);
+    }
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EntrePotResponse> update(@PathVariable String id, @RequestBody @Valid EntrepotUpdateRequest request) {
@@ -65,6 +72,23 @@ public class EntrepotController {
         this.entrePotService.findOneEntrepot(id);
         List<StockResponse> stocks = stockService.findByEntrepotId(id);
         return ResponseEntity.ok(stocks);
+    }
+
+    @PatchMapping("/assigne/{entrepotId}")
+    public ResponseEntity<EntrePotResponse> assign(
+            @PathVariable String entrepotId,
+            @RequestBody String gestionnaireId
+    ) {
+        EntrePotResponse response = this.entrePotService.assign(entrepotId, gestionnaireId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/deassign/{entrepotId}")
+    public ResponseEntity<EntrePotResponse> deassign(
+            @PathVariable String entrepotId
+    ) {
+        EntrePotResponse response = this.entrePotService.deassign(entrepotId);
+        return ResponseEntity.ok(response);
     }
 
 }

@@ -9,5 +9,6 @@ public interface EntrepotRepository {
     Entrepot save(Entrepot entrepot);
     Optional<Entrepot> findById(String id);
     List<Entrepot> findAll();
+    List<Entrepot> findByGestionnaireId(String gestionnaireId);
     void deleteById(String id);
 }

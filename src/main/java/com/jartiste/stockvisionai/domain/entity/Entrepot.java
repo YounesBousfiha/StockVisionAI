@@ -27,6 +27,10 @@ public class Entrepot {
     @NotBlank
     private String ville;
 
+    @NotBlank
+    private String gestionnaireId;
+
+
     private LocalDateTime creationAt;
     private LocalDateTime updateAt;
 }

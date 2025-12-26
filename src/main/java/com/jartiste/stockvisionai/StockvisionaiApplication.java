@@ -13,6 +13,8 @@ public class StockvisionaiApplication implements CommandLineRunner {
 
 	@Value( "${jwt.secret-key}")
 	private String jwtSecret;
+
+	
 	public static void main(String[] args) {
 		SpringApplication.run(StockvisionaiApplication.class, args);
 
