@@ -6,7 +6,7 @@ import com.jartiste.stockvisionai.domain.repository.HistoriqueVenteRepository;
 import com.jartiste.stockvisionai.domain.repository.StockRepository;
 import com.jartiste.stockvisionai.infrastructure.ai.DeepSeekClient;
 import com.jartiste.stockvisionai.infrastructure.ai.PredictionPromptBuilder;
-import com.jartiste.stockvisionai.presentation.dto.response.PredictionResponse;
+import com.jartiste.stockvisionai.presentation.dto.response.PrevisionResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class PredictionService {
     private final DeepSeekClient deepSeekClient;
     private final PredictionPromptBuilder promptBuilder;
 
-    public PredictionResponse predireStock(String entrepotId, String productId) {
+    public PrevisionResponse predireStock(String entrepotId, String productId) {
         Stock stock = stockRepo.findByEntrepotIdAndProductId(entrepotId, productId);
         if (stock == null) {
             log.warn("Stock not found for Product: {} in Entrepot: {}", productId, entrepotId);
