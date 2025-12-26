@@ -22,6 +22,9 @@ public class Prevision {
     @NotBlank
     private LocalDate predictionDate;
 
+    private String productId;
+    private String entrepotId;
+
     @NotBlank
     private Integer quantity;
 
