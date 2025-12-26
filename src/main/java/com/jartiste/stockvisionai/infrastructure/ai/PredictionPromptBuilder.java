@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.jartiste.stockvisionai.domain.entity.HistoriqueVente;
 import com.jartiste.stockvisionai.domain.entity.Stock;
-import com.jartiste.stockvisionai.presentation.dto.response.PredictionResponse;
+import com.jartiste.stockvisionai.presentation.dto.response.PrevisionResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -55,18 +55,18 @@ public class PredictionPromptBuilder {
         return root.toString();
     }
 
-    public PredictionResponse parseResponse(String rawJson, String entrepotId, String productId) {
+    public PrevisionResponse parseResponse(String rawJson, String entrepotId, String productId) {
         try {
             String cleanJson = rawJson.replaceAll("```json", "").replaceAll("```", "").trim();
             JsonNode root = objectMapper.readTree(cleanJson);
 
-            return PredictionResponse.builder()
+            return PrevisionResponse.builder()
                     .productId(productId)
                     .entrepotId(entrepotId)
-                    .datePrevision(LocalDate.now())
-                    .quantitePrevue30Jours(root.path("quantite_prevue_30_jours").asInt())
-                    .niveauConfiance(root.path("niveau_confiance").asInt())
-                    .recommandation(root.path("recommandation").asText())
+                    .predictionDate(LocalDate.now())
+                    .quantity(root.path("quantity").asInt())
+                    .niveauConfiance(root.path("niveauConfiance").asInt())
+                    .recommendation(root.path("recommendation").asText())
                     .build();
         } catch (JsonProcessingException e) {
             log.error("Failed to parse AI response. Raw: {}", rawJson, e);
@@ -90,8 +90,8 @@ public class PredictionPromptBuilder {
         ObjectNode schema = task.putObject("output_format")
                 .put("type", "json")
                 .putObject("required_schema");
-        schema.put("quantite_prevue_30_jours", "Integer");
-        schema.put("niveau_confiance", "Integer");
-        schema.put("recommandation", "String (Use the template from algorithm_steps)");
+        schema.put("quantity", "Integer");
+        schema.put("niveauConfiance", "Integer");
+        schema.put("recommendation", "String (Use the template from algorithm_steps)");
     }
 }
