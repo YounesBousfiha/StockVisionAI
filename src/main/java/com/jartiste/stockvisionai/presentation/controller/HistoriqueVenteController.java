@@ -13,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HistoriqueVenteController {
     private final HistoriqueVenteService historiqueVenteService;
+
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
     public ResponseEntity<HistoriqueVenteResponse> create(@RequestBody @Valid HistoriqueVenteRequest request) {
