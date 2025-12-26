@@ -14,10 +14,10 @@ import java.util.List;
 public class HistoriqueVenteController {
     private final HistoriqueVenteService historiqueVenteService;
 
-    @PostMapping
+    @PostMapping("/entrepot/{entrepot_id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
-    public ResponseEntity<HistoriqueVenteResponse> create(@RequestBody @Valid HistoriqueVenteRequest request) {
-        HistoriqueVenteResponse response = historiqueVenteService.createHistoriqueVente(request);
+    public ResponseEntity<HistoriqueVenteResponse> create(@RequestBody @Valid HistoriqueVenteRequest request,@PathVariable String entrepot_id) {
+        HistoriqueVenteResponse response = historiqueVenteService.createHistoriqueVente(request ,entrepot_id);
         return ResponseEntity.status(201).body(response);
     }
     @GetMapping
