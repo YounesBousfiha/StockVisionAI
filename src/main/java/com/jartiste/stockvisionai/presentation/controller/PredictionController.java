@@ -1,7 +1,7 @@
 package com.jartiste.stockvisionai.presentation.controller;
 
-import com.jartiste.stockvisionai.infrastructure.service.PredictionService;
-import com.jartiste.stockvisionai.presentation.dto.response.PredictionResponse;
+import com.jartiste.stockvisionai.application.service.StockForecastingService;
+import com.jartiste.stockvisionai.presentation.dto.response.PrevisionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,22 +10,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/predictions")
 @RequiredArgsConstructor
 public class PredictionController {
 
-    private final PredictionService predictionService;
+    private final StockForecastingService stockForecastingService;
 
     @PostMapping("/predict/entrepot/{entrepotId}/product/{productId}")
-    public ResponseEntity<PredictionResponse> triggerPrediction(
+    @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
+    public ResponseEntity<PrevisionResponse> triggerPrediction(
             @PathVariable String entrepotId,
             @PathVariable String productId
     ) {
-        PredictionResponse response = predictionService.predireStock(entrepotId, productId);
+        PrevisionResponse response = stockForecastingService.generateAndSavePrediction(entrepotId, productId);
 
         return ResponseEntity.ok(response);
     }
