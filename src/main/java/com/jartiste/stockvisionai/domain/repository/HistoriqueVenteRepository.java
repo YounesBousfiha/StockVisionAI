@@ -7,4 +7,4 @@ public interface HistoriqueVenteRepository {
     Optional<HistoriqueVente> findById(String id);
     List<HistoriqueVente> findAll();
     void deleteById(String id);
-}
+    List<HistoriqueVente> findByEntrepotIdAndProductId(String entrepotId, String productId);}
