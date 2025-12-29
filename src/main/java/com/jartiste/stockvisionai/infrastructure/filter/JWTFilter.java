@@ -65,6 +65,14 @@ public class JWTFilter  extends OncePerRequestFilter {
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request)); // Check this
 
                     SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                    Object userId = null;
+                    if(principal instanceof AutheticatedUser) {
+                        userId = ((AutheticatedUser) principal).getUser().getId();
+                    }
+
+                    log.error("User {} logged in with JWT token {}", userId, jwt);
                 }
             }
         } catch (Exception e) {
