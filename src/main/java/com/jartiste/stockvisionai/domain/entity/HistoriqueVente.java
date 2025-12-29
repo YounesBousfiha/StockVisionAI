@@ -27,4 +27,6 @@ public class HistoriqueVente {
     private Month month;
 
     private Year year;
+
+    private String entrepotId;
 }
