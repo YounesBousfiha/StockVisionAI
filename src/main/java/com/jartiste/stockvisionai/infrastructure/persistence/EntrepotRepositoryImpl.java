@@ -30,10 +30,6 @@ public class EntrepotRepositoryImpl  implements EntrepotRepository {
         return jpaRepository.findAll();
     }
 
-    @Override
-    public List<Entrepot> findByGestionnaireId(String gestionnaireId) {
-        return jpaRepository.findByGestionnaireId(gestionnaireId);
-    }
 
     @Override
     public void deleteById(String id) {
