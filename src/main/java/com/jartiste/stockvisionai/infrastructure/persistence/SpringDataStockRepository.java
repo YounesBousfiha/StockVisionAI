@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface SpringDataStockRepository extends MongoRepository<Stock, String> {
     List<Stock> findByEntrepotId(String entrepotId);
-    List<Stock> findByProductIdIn(List<String> productIds);
+    Stock findByProductId(String productIds);
 }
