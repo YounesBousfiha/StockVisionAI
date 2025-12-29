@@ -11,10 +11,7 @@ public interface EntrePotService {
     EntrePotResponse createEntrepot(EntrePotRequest request);
     List<EntrePotResponse> getAllEntrepot();
     EntrePotResponse findOneEntrepot(String id);
-    List<EntrePotResponse> findByGestionnaireId(String gestionnaireId);
     EntrePotResponse updateEntrepot(String id, @Valid EntrepotUpdateRequest request);
     void deleteEntrepot(String id);
-    EntrePotResponse assign(String entrepotId, String gestionnaireId);
-    EntrePotResponse deassign(String entrepotId);
 
 }
