@@ -24,4 +24,6 @@ public class UserRequestDTO {
     private String password;
 
     private Role role;
+
+    private String entrepotId;
 }
