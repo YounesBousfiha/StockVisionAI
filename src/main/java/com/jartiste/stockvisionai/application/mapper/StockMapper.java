@@ -17,9 +17,13 @@ public interface StockMapper {
     StockResponse toResponse(Stock stock);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "productId", ignore = true)
+    @Mapping(target = "entrepotId", ignore = true)
     Stock toEntity(StockRequest request);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "productId", ignore = true)
+    @Mapping(target = "entrepotId", ignore = true)
     void updateStockFromUpdateDTO(StockUpdateRequest dto, @MappingTarget Stock entity);
 
     default StockResponse toResponseWithProduct(Stock stock, ProductResponse product) {
