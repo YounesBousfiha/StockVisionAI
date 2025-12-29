@@ -9,7 +9,7 @@ public interface StockRepository {
     Stock save(Stock s);
     Optional<Stock> findById(String id);
     List<Stock> findByEntrepotId(String entrepotId);
-    List<Stock> findByProductIdIn(List<String> productIds);
+    Stock findByProductId(String productIds);
     List<Stock> findAll();
     void deleteById(String id);
 }
