@@ -6,5 +6,6 @@ public interface HistoriqueVenteRepository {
     HistoriqueVente save(HistoriqueVente historiqueVente);
     Optional<HistoriqueVente> findById(String id);
     List<HistoriqueVente> findAll();
+    List<HistoriqueVente> findByEntrepotId(String entrepotId);
     void deleteById(String id);
 }
