@@ -3,6 +3,7 @@ package com.jartiste.stockvisionai.infrastructure.service;
 import com.jartiste.stockvisionai.domain.entity.User;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@ToString
 public class AutheticatedUser implements UserDetails {
 
 
@@ -25,6 +27,10 @@ public class AutheticatedUser implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().toString()));
+    }
+
+    public String getId() {
+        return user.getId();
     }
 
     @Override
