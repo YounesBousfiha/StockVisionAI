@@ -2,6 +2,8 @@ package com.jartiste.stockvisionai.presentation.controller;
 
 import com.jartiste.stockvisionai.application.service.EntrePotService;
 import com.jartiste.stockvisionai.application.service.StockService;
+import com.jartiste.stockvisionai.domain.exception.ResourceNotFoundException;
+import com.jartiste.stockvisionai.infrastructure.service.SecurityUtils;
 import com.jartiste.stockvisionai.presentation.dto.request.EntrePotRequest;
 import com.jartiste.stockvisionai.presentation.dto.request.EntrepotUpdateRequest;
 import com.jartiste.stockvisionai.presentation.dto.response.EntrePotResponse;
@@ -22,6 +24,7 @@ public class EntrepotController {
 
     private final EntrePotService entrePotService;
     private final StockService stockService;
+    private final SecurityUtils securityUtils;
 
 
     @PostMapping
@@ -34,6 +37,17 @@ public class EntrepotController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
     public ResponseEntity<List<EntrePotResponse>> getAll() {
+        // If gestionnaire, only return their assigned entrepot
+        if (securityUtils.isGestionnaire()) {
+            String entrepotId = securityUtils.getCurrentUserEntrepotId();
+            if (entrepotId == null) {
+                return ResponseEntity.ok(List.of()); // No entrepot assigned
+            }
+            EntrePotResponse response = this.entrePotService.findOneEntrepot(entrepotId);
+            return ResponseEntity.ok(List.of(response));
+        }
+
+        // Admin can see all entrepots
         List<EntrePotResponse> responses = this.entrePotService.getAllEntrepot();
         return ResponseEntity.ok(responses);
     }
@@ -41,16 +55,15 @@ public class EntrepotController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
     public ResponseEntity<EntrePotResponse> getOne(@PathVariable String id) {
+        // Check if gestionnaire has access to this entrepot
+        if (securityUtils.isGestionnaire() && !securityUtils.hasAccessToEntrepot(id)) {
+            throw new ResourceNotFoundException("Access denied: You can only access your assigned entrepot");
+        }
+
         EntrePotResponse response = this.entrePotService.findOneEntrepot(id);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/gestionnaire/{gestionnaireId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
-    public ResponseEntity<List<EntrePotResponse>> getByGestionnaireId(@PathVariable String gestionnaireId) {
-        List<EntrePotResponse> responses = this.entrePotService.findByGestionnaireId(gestionnaireId);
-        return ResponseEntity.ok(responses);
-    }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -69,26 +82,15 @@ public class EntrepotController {
     @GetMapping("/{id}/stocks")
     @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
     public ResponseEntity<List<StockResponse>> getStocks(@PathVariable String id) {
+        // Check if gestionnaire has access to this entrepot
+        if (securityUtils.isGestionnaire() && !securityUtils.hasAccessToEntrepot(id)) {
+            throw new ResourceNotFoundException("Access denied: You can only access stocks from your assigned entrepot");
+        }
+
         this.entrePotService.findOneEntrepot(id);
         List<StockResponse> stocks = stockService.findByEntrepotId(id);
         return ResponseEntity.ok(stocks);
     }
 
-    @PatchMapping("/assigne/{entrepotId}")
-    public ResponseEntity<EntrePotResponse> assign(
-            @PathVariable String entrepotId,
-            @RequestBody String gestionnaireId
-    ) {
-        EntrePotResponse response = this.entrePotService.assign(entrepotId, gestionnaireId);
-        return ResponseEntity.ok(response);
-    }
-
-    @PatchMapping("/deassign/{entrepotId}")
-    public ResponseEntity<EntrePotResponse> deassign(
-            @PathVariable String entrepotId
-    ) {
-        EntrePotResponse response = this.entrePotService.deassign(entrepotId);
-        return ResponseEntity.ok(response);
-    }
 
 }
