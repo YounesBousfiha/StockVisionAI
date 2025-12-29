@@ -40,4 +40,11 @@ public class HistoriqueVenteServiceImpl implements HistoriqueVenteService {
                 .map(historiqueVenteMapper::toResponse)
                 .toList();
     }
+
+    @Override
+    public List<HistoriqueVenteResponse> findByEntrepotId(String entrepotId) {
+        return historiqueVenteRepository.findByEntrepotId(entrepotId).stream()
+                .map(historiqueVenteMapper::toResponse)
+                .toList();
+    }
 }
