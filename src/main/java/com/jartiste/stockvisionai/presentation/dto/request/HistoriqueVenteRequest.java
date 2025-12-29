@@ -6,5 +6,7 @@ import lombok.Builder;
 public record HistoriqueVenteRequest(
         @NotNull
         @Min(1)
-        Integer quantity
+        Integer quantity,
+        @NotNull
+        String entrepotId
 ) {}
