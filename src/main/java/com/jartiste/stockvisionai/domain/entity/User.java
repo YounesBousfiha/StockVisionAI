@@ -9,7 +9,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Document
 @Getter
@@ -38,6 +37,8 @@ public class User {
     private Role role;
 
     private boolean isActivated;
+
+    private String entrepotId;
 
     private LocalDateTime creationAt;
 
