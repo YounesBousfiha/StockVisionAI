@@ -21,4 +21,9 @@ public class previsionRepositoryImpl implements PrevisionRepository {
     public List<Prevision> findAll() {
         return repo.findAll();
     }
+
+    @Override
+    public List<Prevision> findByEntrepotId(String EntrepotId) {
+        return repo.findByEntrepotId(EntrepotId);
+    }
 }

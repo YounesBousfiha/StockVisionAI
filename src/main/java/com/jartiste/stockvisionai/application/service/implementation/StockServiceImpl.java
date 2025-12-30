@@ -9,6 +9,7 @@ import com.jartiste.stockvisionai.domain.exception.ResourceNotFoundException;
 import com.jartiste.stockvisionai.domain.repository.EntrepotRepository;
 import com.jartiste.stockvisionai.domain.repository.ProductRepository;
 import com.jartiste.stockvisionai.domain.repository.StockRepository;
+import com.jartiste.stockvisionai.infrastructure.service.SecurityUtils;
 import com.jartiste.stockvisionai.presentation.dto.request.StockRequest;
 import com.jartiste.stockvisionai.presentation.dto.request.StockUpdateRequest;
 import com.jartiste.stockvisionai.presentation.dto.response.ProductResponse;
@@ -33,9 +34,17 @@ public class StockServiceImpl implements StockService {
     private static final String PRODUCT_NOT_FOUND = "Product not found with id: ";
     private static final String ENTREPOT_NOT_FOUND = "Entrepot not found with id: ";
     private static final String PRODUCT_ENTREPOT_MISMATCH = "Product does not belong to the specified entrepot";
+    private final SecurityUtils securityUtils;
 
     @Override
+
     public StockResponse createStock(String entrepotId, String productId, StockRequest request) {
+        if (!securityUtils.hasAccessToEntrepot(entrepotId)) {
+            throw new org.springframework.security.access.AccessDeniedException(
+                    "Vous n'avez pas le droit d'effectuer cette action sur cet entrepôt."
+            );
+        }
+
         entrepotRepository.findById(entrepotId)
                 .orElseThrow(() -> new ResourceNotFoundException(ENTREPOT_NOT_FOUND + entrepotId));
 
@@ -46,15 +55,21 @@ public class StockServiceImpl implements StockService {
             throw new ResourceNotFoundException(PRODUCT_ENTREPOT_MISMATCH);
         }
 
-        Stock oldStock = this.stockRepository.findByProductId(productId);
-        if (oldStock != null) {
-            oldStock.setQuantity(oldStock.getQuantity() + request.quantity());
-        }
-        Stock stock = stockMapper.toEntity(request);
-        stock.setEntrepotId(entrepotId);
-        stock.setProductId(productId);
+        Stock existingStock = this.stockRepository.findByProductId(productId);
 
-        Stock saved = stockRepository.save(stock);
+        Stock stockToSave;
+
+        if (existingStock != null) {
+            existingStock.setQuantity(existingStock.getQuantity() + request.quantity());
+            stockToSave = existingStock;
+        } else {
+            stockToSave = stockMapper.toEntity(request);
+            stockToSave.setEntrepotId(entrepotId);
+            stockToSave.setProductId(productId);
+        }
+
+        Stock saved = stockRepository.save(stockToSave);
+
         ProductResponse productResponse = productMapper.toResponse(product);
         return stockMapper.toResponseWithProduct(saved, productResponse);
     }

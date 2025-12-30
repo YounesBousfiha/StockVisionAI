@@ -10,8 +10,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -23,10 +26,11 @@ import java.io.IOException;
 public class JWTFilter  extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
 
-
-    public JWTFilter(JwtService jwtService) {
+    public JWTFilter(JwtService jwtService,@Lazy UserDetailsService userDetailsService) {
         this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -48,12 +52,10 @@ public class JWTFilter  extends OncePerRequestFilter {
             }
 
             String email = jwtService.extractUsername(jwt);
-            String role = jwtService.extractRoles(jwt);
 
             if(email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
                 if(jwtService.isTokenValid(jwt)) {
-                    User user = createUserFromToken(email, role);
-                    AutheticatedUser userDetails = new AutheticatedUser(user);
 
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(

@@ -39,7 +39,7 @@ public class SecurityUtils {
 
     public boolean hasAccessToEntrepot(String entrepotId) {
         if (isAdmin()) {
-            return true; // Admin has access to all entrepots
+            return true;
         }
         if (isGestionnaire()) {
             String userEntrepotId = getCurrentUserEntrepotId();
