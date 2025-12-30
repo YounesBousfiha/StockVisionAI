@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    tools {
+            maven 'maven3'
+            jdk 'jdk21'
+        }
+
     environment {
         APP_NAME = 'stockvision-backend'
 
@@ -19,11 +24,9 @@ pipeline {
         stage('🧪 Build & Analyze') {
            steps {
                 script {
-                    sh 'chmod +x mvnw'
-
                     withSonarQubeEnv('sonar-cloud') {
                         sh """
-                            ./mvnw clean package sonar:sonar \
+                            .mvn clean package sonar:sonar \
                             -Dsonar.organization=${SONAR_ORG} \
                             -Dsonar.projectKey=${SONAR_PROJECT} \
                             -Dsonar.host.url=https://sonarcloud.io \
