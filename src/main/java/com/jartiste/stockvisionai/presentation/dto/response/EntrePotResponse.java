@@ -7,7 +7,6 @@ public record EntrePotResponse(
         String id,
         String nom,
         String address,
-        String ville,
-        String gestionnaireId
+        String ville
 ) {
 }

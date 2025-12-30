@@ -1,6 +1,8 @@
 package com.jartiste.stockvisionai.presentation.controller;
 
 import com.jartiste.stockvisionai.application.service.ProductService;
+import com.jartiste.stockvisionai.domain.exception.ResourceNotFoundException;
+import com.jartiste.stockvisionai.infrastructure.service.SecurityUtils;
 import com.jartiste.stockvisionai.presentation.dto.request.ProductRequest;
 import com.jartiste.stockvisionai.presentation.dto.request.ProductUpdateRequest;
 import com.jartiste.stockvisionai.presentation.dto.response.ProductResponse;
@@ -11,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/product")
@@ -18,6 +21,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final SecurityUtils securityUtils;
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -29,13 +33,35 @@ public class ProductController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
     public ResponseEntity<List<ProductResponse>> getAll(){
-        return ResponseEntity.ok(productService.findAllProducts());
+        List<ProductResponse> allProducts = productService.findAllProducts();
+
+        // If gestionnaire, only return products from their entrepot
+        if (securityUtils.isGestionnaire()) {
+            String entrepotId = securityUtils.getCurrentUserEntrepotId();
+            if (entrepotId == null) {
+                return ResponseEntity.ok(List.of()); // No entrepot assigned
+            }
+            List<ProductResponse> filteredProducts = allProducts.stream()
+                    .filter(product -> entrepotId.equals(product.entrepotId()))
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(filteredProducts);
+        }
+
+        // Admin can see all products
+        return ResponseEntity.ok(allProducts);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
     public ResponseEntity<ProductResponse> getOne(@PathVariable String id){
-        return ResponseEntity.ok(productService.findOneProduct(id));
+        ProductResponse product = productService.findOneProduct(id);
+
+        // Check if gestionnaire has access to this product's entrepot
+        if (securityUtils.isGestionnaire() && !securityUtils.hasAccessToEntrepot(product.entrepotId())) {
+            throw new ResourceNotFoundException("Access denied: You can only access products from your assigned entrepot");
+        }
+
+        return ResponseEntity.ok(product);
     }
 
     @PutMapping("/{id}")

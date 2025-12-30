@@ -6,4 +6,5 @@ public interface HistoriqueVenteService {
     HistoriqueVenteResponse createHistoriqueVente(HistoriqueVenteRequest request,String entrepot_id);
     HistoriqueVenteResponse findOneHistoriqueVente(String id);
     List<HistoriqueVenteResponse> findAllHistoriqueVentes();
+    List<HistoriqueVenteResponse> findByEntrepotId(String entrepotId);
 }

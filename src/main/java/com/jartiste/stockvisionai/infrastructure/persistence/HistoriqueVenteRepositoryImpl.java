@@ -22,6 +22,10 @@ public class HistoriqueVenteRepositoryImpl implements HistoriqueVenteRepository 
         return repo.findAll();
     }
     @Override
+    public List<HistoriqueVente> findByEntrepotId(String entrepotId) {
+        return repo.findByEntrepotId(entrepotId);
+    }
+    @Override
     public void deleteById(String id) {
         repo.deleteById(id);
     }

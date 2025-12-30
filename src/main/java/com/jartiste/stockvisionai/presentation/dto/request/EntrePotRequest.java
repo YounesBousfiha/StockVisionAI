@@ -10,8 +10,6 @@ public record EntrePotRequest(
         @NotBlank
         String address,
         @NotBlank
-        String ville,
-        @NotBlank
-        String gestionnaireId
+        String ville
 ) {
 }

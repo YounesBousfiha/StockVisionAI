@@ -31,8 +31,8 @@ public class StockRepositoryImpl implements StockRepository {
     }
 
     @Override
-    public List<Stock> findByProductIdIn(List<String> productIds) {
-        return repo.findByProductIdIn(productIds);
+    public Stock findByProductId(String productId) {
+        return repo.findByProductId(productId);
     }
 
     @Override

@@ -14,4 +14,6 @@ public class UserUpdateDTO {
 
     @Email
     private String email;
+
+    private String entrepotId;
 }

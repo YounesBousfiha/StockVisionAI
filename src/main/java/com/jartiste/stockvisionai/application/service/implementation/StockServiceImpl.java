@@ -45,7 +45,11 @@ public class StockServiceImpl implements StockService {
         if (!product.getEntrepotId().equals(entrepotId)) {
             throw new ResourceNotFoundException(PRODUCT_ENTREPOT_MISMATCH);
         }
-        // TODO: prenvent re-creation of stock for the same product, instead increment it Quantity
+
+        Stock oldStock = this.stockRepository.findByProductId(productId);
+        if (oldStock != null) {
+            oldStock.setQuantity(oldStock.getQuantity() + request.quantity());
+        }
         Stock stock = stockMapper.toEntity(request);
         stock.setEntrepotId(entrepotId);
         stock.setProductId(productId);

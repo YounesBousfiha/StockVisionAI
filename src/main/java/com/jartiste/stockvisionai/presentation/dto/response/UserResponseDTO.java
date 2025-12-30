@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -16,5 +15,6 @@ public class UserResponseDTO {
     private String email;
     private Role role;
     private boolean isActivated;
+    private String entrepotId;
     private LocalDateTime creationAt;
 }
