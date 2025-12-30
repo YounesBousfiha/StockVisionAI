@@ -28,7 +28,7 @@ jwt:
 
 spring.ai:
   deepseek:
-    api-key: sk-458170e762304c7cbf4e13f018a4f1f5
+    api-key: API_KEY
     base-url: https://api.deepseek.com/chat/completions
     model: deepseek-chat
 
