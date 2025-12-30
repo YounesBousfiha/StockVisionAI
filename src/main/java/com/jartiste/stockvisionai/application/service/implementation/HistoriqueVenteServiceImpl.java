@@ -18,13 +18,15 @@ public class HistoriqueVenteServiceImpl implements HistoriqueVenteService {
     private final HistoriqueVenteMapper historiqueVenteMapper;
     private static final String NOT_FOUND_MSG = "HistoriqueVente not found with id: ";
     @Override
-    public HistoriqueVenteResponse createHistoriqueVente(HistoriqueVenteRequest request) {
+    public HistoriqueVenteResponse createHistoriqueVente(HistoriqueVenteRequest request,String entrepot_id) {
         HistoriqueVente entity = historiqueVenteMapper.toEntity(request);
-        // TODO: make sure to verify Stock & decrease the stock size
         LocalDate now = LocalDate.now();
-        entity.setDayOfWeek(now.getDayOfWeek());
+        LocalDate yesterday = now.minusDays(1);
+        entity.setDayOfWeek(yesterday.getDayOfWeek());
         entity.setMonth(now.getMonth());
-        entity.setYear(Year.of(now.getYear()));
+        entity.setYear(now.getYear());
+        entity.setEntrepotId(entrepot_id);
+        entity.setCreateAt(yesterday);
         HistoriqueVente saved = historiqueVenteRepository.save(entity);
         return historiqueVenteMapper.toResponse(saved);
     }
