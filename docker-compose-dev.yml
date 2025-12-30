@@ -1,0 +1,16 @@
+include:
+  - docker-compose.yml
+
+services:
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27018/
+    depends_on:
+      - mongodb
+    networks:
+      - stock-network
