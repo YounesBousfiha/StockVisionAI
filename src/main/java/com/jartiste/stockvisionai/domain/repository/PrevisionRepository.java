@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface PrevisionRepository {
     Prevision save(Prevision p);
     List<Prevision> findAll();
+    List<Prevision> findByEntrepotId(String EntrepotId);
 }
