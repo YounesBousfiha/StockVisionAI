@@ -68,7 +68,6 @@ public class StockController {
     @GetMapping("/entrepot/{entrepotId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
     public ResponseEntity<List<StockResponse>> getByEntrepot(@PathVariable String entrepotId){
-        // Check if gestionnaire has access to this entrepot
         if (securityUtils.isGestionnaire() && !securityUtils.hasAccessToEntrepot(entrepotId)) {
             throw new ResourceNotFoundException("Access denied: You can only access stocks from your assigned entrepot");
         }
