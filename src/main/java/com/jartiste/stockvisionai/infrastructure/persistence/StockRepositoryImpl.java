@@ -44,4 +44,9 @@ public class StockRepositoryImpl implements StockRepository {
     public void deleteById(String id) {
         repo.deleteById(id);
     }
+
+    @Override
+    public Stock findByEntrepotIdAndProductId(String entrepotId, String productId) {
+        return repo.findByEntrepotIdAndProductId(entrepotId,productId);
+    }
 }

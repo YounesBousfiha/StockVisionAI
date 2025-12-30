@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface SpringDataHistoriqueVenteRepository extends MongoRepository<HistoriqueVente, String> {
-    List<HistoriqueVente> findByEntrepotId(String entrepotId);
+    List<HistoriqueVente> findByEntrepotIdAndProductId(String entrepotId, String productId);
 }

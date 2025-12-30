@@ -11,6 +11,5 @@ public record HistoriqueVenteResponse(
         Integer quantity,
         DayOfWeek dayOfWeek,
         Month month,
-        Year year,
-        String entrepotId
+        Integer year
 ) {}

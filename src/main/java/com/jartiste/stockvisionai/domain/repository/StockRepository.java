@@ -12,5 +12,7 @@ public interface StockRepository {
     Stock findByProductId(String productIds);
     List<Stock> findAll();
     void deleteById(String id);
+    Stock findByEntrepotIdAndProductId(String entrepotId, String productId);
+
 }
 

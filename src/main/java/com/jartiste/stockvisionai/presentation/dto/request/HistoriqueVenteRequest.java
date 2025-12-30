@@ -7,6 +7,8 @@ public record HistoriqueVenteRequest(
         @NotNull
         @Min(1)
         Integer quantity,
+
         @NotNull
-        String entrepotId
+        String productId
+
 ) {}

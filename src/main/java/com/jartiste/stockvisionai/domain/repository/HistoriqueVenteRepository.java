@@ -8,4 +8,4 @@ public interface HistoriqueVenteRepository {
     List<HistoriqueVente> findAll();
     List<HistoriqueVente> findByEntrepotId(String entrepotId);
     void deleteById(String id);
-}
+    List<HistoriqueVente> findByEntrepotIdAndProductId(String entrepotId, String productId);}
