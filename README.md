@@ -66,10 +66,8 @@
   - Stock threshold alerts
 
 - **Inventory Control**
-  - Real-time stock tracking
   - Multi-warehouse inventory
   - Stock movement history
-  - Low stock notifications
 
 - **Sales History**
   - Comprehensive sales tracking
