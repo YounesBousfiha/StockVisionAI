@@ -21,7 +21,7 @@ public class HistoriqueVenteController {
         return ResponseEntity.status(201).body(response);
     }
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'GESTIONNAIRE')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<HistoriqueVenteResponse>> getAll() {
         return ResponseEntity.ok(historiqueVenteService.findAllHistoriqueVentes());
     }

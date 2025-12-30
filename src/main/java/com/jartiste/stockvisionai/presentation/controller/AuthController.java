@@ -20,7 +20,6 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<LoginResponse> register(
             @RequestBody RegisterRequest registerRequest) {
         LoginResponse response = this.authService.register(registerRequest.getEmail(), registerRequest.getPassword());
