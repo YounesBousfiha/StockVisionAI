@@ -26,7 +26,7 @@ pipeline {
                 script {
                     withSonarQubeEnv('sonar-cloud') {
                         sh """
-                            .mvn clean package sonar:sonar \
+                            mvn clean package sonar:sonar \
                             -Dsonar.organization=${SONAR_ORG} \
                             -Dsonar.projectKey=${SONAR_PROJECT} \
                             -Dsonar.host.url=https://sonarcloud.io \
