@@ -1,9 +1,6 @@
 package com.jartiste.stockvisionai.infrastructure.config;
 
 
-import com.jartiste.stockvisionai.infrastructure.filter.JWTFilter;
-import com.jartiste.stockvisionai.infrastructure.service.JwtService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -13,47 +10,38 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@Profile("!prod")
-@EnableMethodSecurity(prePostEnabled = true)
-public class SecurityConfig {
+@EnableMethodSecurity
+@Profile("prod")
+public class SecurityConfigKeycloak {
 
-    @Autowired
-    private JwtService jwtService;
+    private final KeycloakAuthConverter keycloakAuthConverter;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize ->
-
-                        authorize
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
-
-                                .anyRequest().authenticated()
-                )
-                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
-                .build();
+    public SecurityConfigKeycloak(KeycloakAuthConverter keycloakAuthConverter) {
+        this.keycloakAuthConverter = keycloakAuthConverter;
     }
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().authenticated()
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(jwt -> jwt.jwtAuthenticationConverter(keycloakAuthConverter)));
 
+
+                return http.build();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public JWTFilter jwtFilter() {
-        return new JWTFilter(jwtService);
     }
 
     @Bean

@@ -2,10 +2,15 @@ spring:
   config:
     activate:
       on-profile: prod
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8180/realms/stock-realm}
+          jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:8180/realms/stock-realm/protocol/openid-connect/certs}
   data:
     mongodb:
-      uri: ${MONGODB_URI:mongodb://mongodb:27017/stockvisionai}
+      uri: ${MONGODB_URI:mongodb://localhost:27017/stockvisionai}
 
     redis:
       host: ${REDIS_HOST:redis}

@@ -12,5 +12,6 @@ public interface SpringDataStockRepository extends MongoRepository<Stock, String
     List<Stock> findByEntrepotId(String entrepotId);
     List<Stock> findByProductIdIn(List<String> productIds);
     Stock findByEntrepotIdAndProductId(String entrepotId, String productId);
+    Stock findByProductId(String productId);
 
 }
